@@ -201,6 +201,7 @@ contract ThunderLoan is Initializable, OwnableUpgradeable, UUPSUpgradeable, Orac
 
         uint256 fee = getCalculatedFee(token, amount);
         // slither-disable-next-line reentrancy-vulnerabilities-2 reentrancy-vulnerabilities-3
+        //@followup
         assetToken.updateExchangeRate(fee);
 
         emit FlashLoan(receiverAddress, token, amount, fee, params);
@@ -208,6 +209,7 @@ contract ThunderLoan is Initializable, OwnableUpgradeable, UUPSUpgradeable, Orac
         s_currentlyFlashLoaning[token] = true;
         assetToken.transferUnderlyingTo(receiverAddress, amount);
         // slither-disable-next-line unused-return reentrancy-vulnerabilities-2
+        //@follownup ..Do we need the return value of the function call
         receiverAddress.functionCall(
             abi.encodeCall(
                 IFlashLoanReceiver.executeOperation,
@@ -266,6 +268,7 @@ contract ThunderLoan is Initializable, OwnableUpgradeable, UUPSUpgradeable, Orac
         if (newFee > s_feePrecision) {
             revert ThunderLoan__BadNewFee();
         }
+        //@audit ..its  a storage variable ..so we have to emit an event 
         s_flashLoanFee = newFee;
     }
 
