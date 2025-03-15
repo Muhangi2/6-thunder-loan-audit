@@ -86,6 +86,7 @@ contract AssetToken is ERC20 {
         // newExchangeRate = oldExchangeRate * (totalSupply + fee) / totalSupply
         // newExchangeRate = 1 (4 + 0.5) / 4
         // newExchangeRate = 1.125
+        //@audit gas ,too many storage reads ->store as memory variable 
         uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
         if (newExchangeRate <= s_exchangeRate) {
@@ -103,3 +104,5 @@ contract AssetToken is ERC20 {
         return i_underlying;
     }
 }
+
+

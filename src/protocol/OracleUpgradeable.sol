@@ -16,6 +16,10 @@ contract OracleUpgradeable is Initializable {
         //@audit need to to zero address checks
         s_poolFactory = poolFactoryAddress;
     }
+    //we are calling external contract
+    //what if price is manupated
+    //reentracny..?
+    //check the tests?@audit informaltional you should use forked tests
 
     function getPriceInWeth(address token) public view returns (uint256) {
         address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
